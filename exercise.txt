@@ -1,0 +1,29 @@
+Part 6: Mini Project
+Student Management System
+
+Requirements:
+
+Menu:
+
+1. Add Student
+2. View Students
+3. Search Student
+4. Delete Student
+5. Exit
+
+Use:
+
+OOP
+Read files
+Write files
+join()
+split()
+if __name__ == "__main__"
+
+Bonus:
+
+Store data like
+
+John|20|Computer Science
+Mary|19|Accounting
+David|22|Physics
