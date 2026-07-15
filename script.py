@@ -1,50 +1,57 @@
 
 class Student:
-    def __init__(self, name, age, course):
+    def __init__(self, name: str, age: int, course: str) -> None:
         self.name = name
         self.age = age
         self.course = course
 
     
-    def save(self):
+    def save(self) -> None:
         with open('students.txt', 'a') as wf:
             wf.write(f"{self.name}|{self.age}|{self.course}\n")
     
     @classmethod
-    def view_students(cls):
-        with open('students.txt', 'r') as rf:
-            rf_contents = rf.read()
-            print(rf_contents)
+    def view_students(cls) -> None:
+        try:
+            with open('students.txt', 'r') as rf:
+                rf_contents = rf.read()
+                print(rf_contents)
+        except FileNotFoundError as e:
+            print(e)
     
     @classmethod
-    def search_student(cls, student_name):
+    def search_student(cls, student_name: str) -> None:
         found = False
-        with open('students.txt', 'r') as rf:
-            for line in rf:
-                name, age, course = line.strip().split('|')
-                if student_name == name:
-                    print(line)
-                    found = True
-        if not found:
-            print(f"{student_name} isn't in file")
+        try:
+            with open('students.txt', 'r') as rf:
+                for line in rf:
+                    name, age, course = line.strip().split('|')
+                    if student_name == name:
+                        print(line)
+                        found = True
+            if not found:
+                print(f"{student_name} isn't in file")
+        except FileNotFoundError as e:
+            print(e)
     
     @classmethod
-    def delete_student(cls, student_name):
+    def delete_student(cls, student_name: str) -> None:
         found = False
         remaining_students = []
-        with open('students.txt', 'r') as rf:
-            for line in rf:
-                name, age, course = line.strip().split('|')
-                if student_name == name:
-                    found = True
-                    continue
-                remaining_students.append(line)
-            with open('students.txt', 'w') as wf:
-                wf.writelines(remaining_students)
-        if not found:
-            print(f"{student_name} isn't in file")
-
-
+        try:
+            with open('students.txt', 'r') as rf:
+                for line in rf:
+                    name, age, course = line.strip().split('|')
+                    if student_name == name:
+                        found = True
+                        continue
+                    remaining_students.append(line)
+                with open('students.txt', 'w') as wf:
+                    wf.writelines(remaining_students)
+            if not found:
+                print(f"{student_name} isn't in file")
+        except FileNotFoundError as e:
+            print(e)
 
     @classmethod
     def menu(cls):
@@ -69,11 +76,8 @@ class Student:
                     Student.delete_student(student_name=student_name)
                 else:
                     print('Choose from 1-5')
-        except ValueError as e:
-            print(e)
-
-                
-
+        except ValueError:
+            print('Please input any number from the options')
 
             
 
