@@ -1,3 +1,4 @@
+from typing import List
 
 class Student:
     def __init__(self, name: str, age: int, course: str) -> None:
@@ -7,9 +8,12 @@ class Student:
 
     
     def save(self) -> None:
-        with open('students.txt', 'a') as wf:
-            wf.write(f"{self.name}|{self.age}|{self.course}\n")
-    
+        try:
+            with open('students.txt', 'a') as wf:
+                wf.write(f"{self.name}|{self.age}|{self.course}\n")
+        except FileNotFoundError as e:
+            print(e)
+        
     @classmethod
     def view_students(cls) -> None:
         try:
@@ -29,15 +33,17 @@ class Student:
                     if student_name == name:
                         print(line)
                         found = True
-            if not found:
-                print(f"{student_name} isn't in file")
         except FileNotFoundError as e:
             print(e)
+        else:
+            if not found:
+                print(f"{student_name} isn't in file")
+        
     
     @classmethod
     def delete_student(cls, student_name: str) -> None:
         found = False
-        remaining_students = []
+        remaining_students:List[str] = []
         try:
             with open('students.txt', 'r') as rf:
                 for line in rf:
@@ -48,10 +54,12 @@ class Student:
                     remaining_students.append(line)
                 with open('students.txt', 'w') as wf:
                     wf.writelines(remaining_students)
-            if not found:
-                print(f"{student_name} isn't in file")
         except FileNotFoundError as e:
             print(e)
+        else:
+            if not found:
+                print(f"{student_name} isn't in file")
+        
 
     @classmethod
     def menu(cls):
@@ -76,16 +84,7 @@ class Student:
                     Student.delete_student(student_name=student_name)
                 else:
                     print('Choose from 1-5')
-        except ValueError:
-            print('Please input any number from the options')
+        except Exception as e:
+            print(e)
 
-            
-
-student1 = Student('John', 20, 'Computer Science')
-student2 = Student('Mary', 19, 'Accounting')
-student3 = Student('David', 22, 'Physics')
-
-student1.save()
-student2.save()
-student3.save()
 Student.menu()
